@@ -101,14 +101,11 @@ function Home() {
 
       <div className="bg-white rounded-lg shadow-sm p-8 my-12">
         <h2 className="text-2xl font-bold mb-4">All Ideas</h2>{" "}
-        {/* Changed title */}
         <div className="grid md:grid-cols-2 gap-6">
           {ideas.map((idea) => (
             <div key={idea._id} className="border rounded-lg p-4">
               <h3 className="text-lg font-semibold mb-2">{idea.title}</h3>{" "}
-              {/* Display idea title */}
               <p className="text-gray-600 mb-4">{idea.description}</p>{" "}
-              {/* Display idea description */}
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">
                   Submitted{" "}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Trash2, ThumbsUp, ThumbsDown } from "lucide-react";
@@ -34,6 +34,11 @@ function SingleIdea() {
   }, [ideaId]);
 
   const handleVote = async () => {
+    if (!user) {
+      toast.error("You must be logged in to vote.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         `http://localhost:5000/api/ideas/${ideaId}/vote`,
@@ -55,6 +60,11 @@ function SingleIdea() {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      toast.error("You must be logged in to comment.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         `http://localhost:5000/api/ideas/${ideaId}/comment`,
@@ -74,6 +84,11 @@ function SingleIdea() {
   };
 
   const handleDeleteComment = async (commentId) => {
+    if (!user) {
+      toast.error("You must be logged in to delete a comment.");
+      return; // Stop the function if the user is not logged in
+    }
+
     try {
       const response = await axios.delete(
         `http://localhost:5000/api/ideas/${ideaId}/comment/${commentId}`,
@@ -94,7 +109,7 @@ function SingleIdea() {
   if (loading) return <div>Loading idea...</div>;
   if (error) return <div>{error}</div>;
 
-  const hasUserVoted = idea.votes?.some((vote) => vote.user === user._id);
+  const hasUserVoted = idea.votes?.some((vote) => vote.user === user?._id);
 
   return (
     <div className="max-w-4xl mx-auto p-4">
